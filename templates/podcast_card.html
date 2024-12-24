@@ -1,0 +1,19 @@
+<center>
+   
+<article class="podcast-card">
+    <a href="{{ post.link }}">
+        <img src="{{ post.image.url }}" alt="Podcast image" class="podcast-image">
+    </a>
+    
+  <div class="podcast-content">
+      <a class="link_class" href="{% url 'podcast_detail' post.id %}"> 
+    <h2>{{ post.title }}</h2>
+          </a>
+      <h2>By: {{ post.creator.name }}</h2>
+    <p>{{ post.pub_date }}</p>
+    <p>{{ post.description }}</p>
+  </div>
+
+</article>
+
+</center>

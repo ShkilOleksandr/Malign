@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>User Dashboard</title>
+</head>
+<body>
+    <h1>Welcome, {{ user.username }}!</h1>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Joined on:</strong> {{ user.date_joined|date:"F j, Y" }}</p>
+
+    <hr>
+    <p><a href="{% url 'update_user_info' %}">Update User Information</a></p>
+    <p><a href="{% url 'logout' %}">Logout</a></p>
+</body>
+</html>

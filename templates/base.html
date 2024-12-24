@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            {% block title %}
+                Default Title
+             {% endblock %}
+        </title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    </head>
+    <header>
+        {% block content_of_header %}
+        {% endblock %}
+    </header>
+    <body>
+        <main>
+         {% block content %}
+             
+         {% endblock %}
+        </main>
+    <footer>
+        &copy; 2024 Malign
+    </footer>
+    </body>
+</html>

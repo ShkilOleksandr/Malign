@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content_of_header %}
+
+    <div class="podcasts_header">
+        <a href='/' class="podcast_logo">
+        <img  src="{% static 'logos/Malign_logo.png' %}" alt="No logo ;(" class="podcast_logo"/>
+        </a>
+        <h1>Malign</h1>
+        <div class="separator"></div>
+        <h1>Podcast details</h1>
+    </div>
+
+{% endblock %}
+
+{% block content %}
+    <article class="podcast-card">
+        {% if podcast.image %}
+            <img src="{{ podcast.image.url }}" alt="Podcast Image" style="max-width: 400px;">
+        {% endif %}
+        <div>
+            <h1>{{ podcast.title }}</h1>
+            <p><strong>Creator:</strong> {{ podcast.creator.user.username }}</p>
+            <p><strong>Description:</strong> {{ podcast.description }}</p>
+            <p><strong>Publication Date:</strong> {{ podcast.pub_date|date:"F j, Y" }}</p>
+            <p>
+                <strong>Link:</strong>
+                <a href="{{ podcast.link }}" target="_blank">Listen to Podcast</a>
+            </p>
+
+        </div>
+    </article>
+    <hr>
+
+    <h2>Comments</h2>
+    {% if comments %}
+        <ul>
+            {% for comment in comments %}
+                <li>
+                    <strong>{{ comment.author }}</strong> on {{ comment.pub_date|date:"F j, Y H:i" }}:
+                    <p>{{ comment.content }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No comments yet.</p>
+    {% endif %}
+
+    <hr>
+
+    <h2>Leave a Comment</h2>
+    <form method="post" action="{% url 'add_comment' podcast.id %}">
+        {% csrf_token %}
+        <textarea name="content" rows="4" cols="50" placeholder="Write your comment here..." required></textarea>
+        <br>
+        <button type="submit">Submit Comment</button>
+    </form>
+
+    <p><a href="{% url 'home' %}">Back to Home</a></p>
+
+{% endblock %}

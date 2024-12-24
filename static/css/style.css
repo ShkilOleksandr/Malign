@@ -1,0 +1,127 @@
+
+body{
+    background-color: #b0cece;
+}
+main {
+    padding-bottom: 64px; /* Add padding equal to footer height + margin */
+    box-sizing: border-box;
+}
+
+.podcasts_header {
+    font-family: 'Inter', sans-serif;
+    text-align: center;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    background-color: darkcyan;
+    box-sizing: border-box;
+}
+.podcast_logo {
+
+    height: 90% !important;
+    width: auto !important;
+    margin-right: 16px; /* Space between the image and content */
+    border-radius: 8px; /* Optional: Rounded corners */
+    transition: transform 0.3s ease;
+}
+.separator {
+    width: 1px; /* Width of the vertical line */
+    background-color: black; /* Color of the line */
+    height: 50%; /* Adjust the height of the line */
+    margin: 0 16px; /* Space around the line */
+}
+article{
+    margin: 1em;
+}
+.podcast-card {
+
+    flex-grow: 1; /* Make the card take up all available free space */
+    overflow: hidden; /* Clear floated elements */
+    border: 1px solid #ddd;
+    padding: 16px;
+    border-radius: 8px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #f9f9f9;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex; /* Ensure proper alignment of image and content */
+    gap: 16px;
+    box-sizing: border-box; /* Ensure padding and borders are included in width calculation */
+    width: 80%;
+    height: auto;
+}
+
+
+/* Hover effect for podcast card */
+.podcast-card:hover {
+    transform: scale(1.03); /* Slightly enlarge on hover */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Add a stronger shadow */
+}
+
+/* Image styling */
+.podcast-image {
+    float: left; /* Float the image to the left */
+    max-width: 150px; /* Set a fixed width */
+    height: auto; /* Maintain aspect ratio */
+    margin-right: 16px; /* Space between the image and content */
+    border-radius: 8px; /* Optional: Rounded corners */
+    transition: transform 0.3s ease;
+}
+
+/* Image hover effect */
+.podcast-image:hover {
+    transform: scale(1.1); /* Slightly enlarge the image on hover */
+}
+
+/* Content container */
+.podcast-content {
+    overflow: hidden; /* Ensures content flows correctly beside the image */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: left;
+    flex:1;
+}
+.link_class {
+    text-decoration: none; /* Remove underline */
+    color: inherit;        /* Use the color of the parent element */
+}
+footer {
+    position: fixed;
+    bottom: 0;
+    box-sizing: border-box;
+    width: 100%;
+    height: 40px; /* Set footer height */
+    padding: 12px;
+    background-color: #eaeaea;
+
+    color: #333333;
+    font-size: smaller;
+    font-weight: 500;
+
+    border-top: lightgray 1px solid;
+}
+
+footer a {
+    color: #002b00;
+}
+
+footer a:hover {
+    opacity: 0.7;
+}
+
+.login_form {
+    background-color: #eaeaea;
+    border-radius: 4px;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10%;
+    width: 30%;
+    height: 40% !important;
+    padding: 16px;
+    justify-content: center;
+    text-align: center;
+}

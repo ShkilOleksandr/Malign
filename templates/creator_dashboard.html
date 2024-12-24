@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Creator Dashboard
+{% endblock %}
+{% block content_of_header %}
+
+    <div class="podcasts_header">
+    <a href='/' class="podcast_logo">
+        <img  src="{% static 'logos/Malign_logo.png' %}" alt="No logo ;(" class="podcast_logo"/>
+    </a>
+        <h1>Malign</h1>
+        <div class="separator"></div>
+        <h1>Dashboard</h1>
+    </div>
+
+{% endblock %}
+{% block content %}
+    <article class="podcast-card">
+    <h1>Welcome, {{ creator.user.username }}!</h1>
+    <p><strong>Bio:</strong> {{ creator.bio }}</p>
+    <p><strong>Website:</strong> 
+        <a href="{{ creator.website }}" target="_blank">{{ creator.website }}</a>
+    </p>
+    <p><strong>Avatar:</strong></p>
+    {% if creator.avatar %}
+        <img src="{{ creator.avatar.url }}" alt="Avatar" style="max-width: 200px;">
+    {% else %}
+        <p>No avatar uploaded.</p>
+    {% endif %}
+    </article>
+    <hr>
+    <article class="podcast-card">
+    <h2>Upload a New Podcast</h2>
+    <form method="post" enctype="multipart/form-data" action="{% url 'upload_podcast' %}">
+        {% csrf_token %}
+        <label for="title">Podcast Title:</label>
+        <input type="text" id="title" name="title" required>
+        <br>
+        
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required></textarea>
+        <br>
+        
+        <label for="pub_date">Publication Date:</label>
+        <input type="datetime-local" id="pub_date" name="pub_date" required>
+        <br>
+        
+        <label for="image">Podcast Image:</label>
+        <input type="file" id="image" name="image" required>
+        <br>
+        
+        <label for="link">Podcast Link:</label>
+        <input type="url" id="link" name="link" required>
+        <br>
+        
+        <button type="submit">Upload Podcast</button>
+    </form>
+
+    <hr>
+        <p><a href="{% url 'update_creator_info' %}">Update Creator Information</a></p>
+    <p><a href="{% url 'logout' %}">Logout</a></p>
+    </article>
+{% endblock %}
+
