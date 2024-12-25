@@ -23,8 +23,8 @@ Creator Dashboard
         <a href="{{ creator.website }}" target="_blank">{{ creator.website }}</a>
     </p>
     <p><strong>Avatar:</strong></p>
-    {% if creator.avatar %}
-        <img src="{{ creator.avatar.url }}" alt="Avatar" style="max-width: 200px;">
+    {% if creator.user.avatar %}
+        <img src="{{ creator.user.avatar.url}}" alt="Avatar" style="max-width: 200px;">
     {% else %}
         <p>No avatar uploaded.</p>
     {% endif %}
