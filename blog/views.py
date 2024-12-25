@@ -14,7 +14,7 @@ from django import forms
 from django.http import HttpResponse
 from django.utils.functional import SimpleLazyObject
 
-from blog.forms import CustomUserUpdateForm, CreatorUpdateForm
+from blog.forms import CustomUserForm, CreatorForm
 from blog.models import Podcast, Creator, Comment, CustomUser
 
 
@@ -26,9 +26,10 @@ def podcasts(request):
     return render(request, 'podcasts.html', {'posts': podcasts})
 
 def home(request):
-    return redirect('/blog/podcasts')
+    podcasts = Podcast.objects.all()
+    return render(request, 'podcasts.html', {'posts': podcasts})
 def nothing(request):
-    return redirect('/blog/podcasts')
+    return redirect('/home/')
 
 def user_signup(request):
     if request.method == 'POST':
@@ -75,6 +76,8 @@ def creator_signup(request):
         # Create the user
         user = CustomUser.objects.create_user(username=username, email=email, password=password)
 
+
+
         # Create a linked Creator profile
         Creator.objects.create(user=user)
 
@@ -100,16 +103,17 @@ def login_view(request):
     return render(request, 'login.html')
 
 def dashboard_view(request):
-    if hasattr(request.user, 'creator'):
-        # User is a Creator
-        return render(request, 'creator_dashboard.html', {'creator': request.user.creator})
-    elif hasattr(request.user, 'is_authenticated') and request.user.is_authenticated:
-        # User is a regular User (not a Creator)
-        return render(request, 'user_dashboard.html', {'user': request.user})
-    else:
-        # Handle the case where the user is neither a Creator nor a recognized User
-        return redirect('/blog/podcasts')
+    if request.user.is_authenticated:
 
+        # Attempt to get creator profile
+        creator_profile = getattr(request.user, 'creator_profile', None)
+        if creator_profile:
+            return render(request, 'creator_dashboard.html', {'creator': creator_profile})
+        else:
+            print("I am entering the if!")
+            return render(request, 'user_dashboard.html', {'user': request.user})
+    else:
+        return redirect('/blog/podcasts')
 def custom_logout_view(request):
     logout(request)
     return redirect('/')
@@ -177,27 +181,29 @@ def add_comment(request, podcast_id):
 @login_required
 def update_user_info(request):
     if request.method == 'POST':
-        user_form = CustomUserUpdateForm(request.POST, request.FILES, instance=request.user)
-        if user_form.is_valid():
-            user_form.save()
+        form = CustomUserForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
             return redirect('dashboard')
     else:
-        user_form = CustomUserUpdateForm(instance=request.user)
+        form = CustomUserForm(instance=request.user)
 
-    return render(request, 'update_user_info.html', {'user_form': user_form})
+    return render(request, 'update_user_info.html', {'form': form})
 
 
 @login_required
 def update_creator_info(request):
-    if not hasattr(request.user, 'creator'):
-        return redirect('dashboard')  # Redirect non-creators to the user dashboard
+    if not hasattr(request.user, 'creator_profile'):
+        return redirect('dashboard')  # Redirect if not a creator
+
+    creator = request.user.creator_profile  # Access the related Creator instance
 
     if request.method == 'POST':
-        creator_form = CreatorUpdateForm(request.POST, request.FILES, instance=request.user.creator)
-        if creator_form.is_valid():
-            creator_form.save()
+        form = CreatorForm(request.POST, request.FILES, instance=creator, user=request.user)
+        if form.is_valid():
+            form.save()
             return redirect('dashboard')
     else:
-        creator_form = CreatorUpdateForm(instance=request.user.creator)
+        form = CreatorForm(instance=creator, user=request.user)
 
-    return render(request, 'update_creator_info.html', {'creator_form': creator_form})
+    return render(request, 'update_creator_info.html', {'form': form})
