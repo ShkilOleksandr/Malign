@@ -4,54 +4,52 @@ from .models import Creator
 
 CustomUser = get_user_model()
 
-class CustomUserUpdateForm(forms.ModelForm):
+class CustomUserForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = ['username', 'email', 'avatar']  # Include avatar and other user fields
+        fields = ['username', 'email', 'password', 'avatar']
 
-class CreatorUpdateForm(forms.ModelForm):
-    # Add fields from the CustomUser model
-    username = forms.CharField(max_length=150, required=False, label='Login')
-    avatar = forms.ImageField(required=False, label='Avatar')
-    password = forms.CharField(widget=forms.PasswordInput, required=False, label='Password')
+class CreatorForm(forms.ModelForm):
+    # Include fields from CustomUser
+    username = forms.CharField(max_length=150, required=False, label="Username")
+    email = forms.EmailField(required=False, label="Email")
+    avatar = forms.ImageField(required=False, label="Avatar")
+    password = forms.CharField(widget=forms.PasswordInput, required=False, label="Password")
 
     class Meta:
         model = Creator
-        fields = ['bio', 'website']  # Include Creator-specific fields
+        fields = ['bio', 'website']  # Fields specific to Creator
 
     def __init__(self, *args, **kwargs):
-        # Extract the 'user' instance from the Creator model
-        user = kwargs.pop('user', None)
+        # Get the 'user' instance from kwargs
+        self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
-        if user:
-            self.fields['username'].initial = user.username
-            self.fields['avatar'].initial = user.avatar
-            self.user = user  # Save the user instance for later use
+
+        # Populate CustomUser fields if user is provided
+        if self.user:
+            self.fields['username'].initial = self.user.username
+            self.fields['email'].initial = self.user.email
+            self.fields['avatar'].initial = self.user.avatar
 
     def save(self, commit=True):
         # Save Creator fields
         creator = super().save(commit=False)
 
-        print(f"Saving Creator: {creator}")  # Debug Creator instance
-
         # Save CustomUser fields
-        if hasattr(self, 'user'):
+        if self.user:
             if self.cleaned_data.get('username'):
-                print(f"Updating username to: {self.cleaned_data['username']}")
                 self.user.username = self.cleaned_data['username']
+            if self.cleaned_data.get('email'):
+                self.user.email = self.cleaned_data['email']
             if self.cleaned_data.get('avatar'):
-                print(f"Updating avatar")
                 self.user.avatar = self.cleaned_data['avatar']
             if self.cleaned_data.get('password'):
-                print(f"Updating password")
-                self.user.set_password(self.cleaned_data['password'])  # Use `set_password`
+                self.user.set_password(self.cleaned_data['password'])  # Hash the password
 
             if commit:
-                self.user.save()  # Save the CustomUser instance
-                print(f"CustomUser saved: {self.user}")
+                self.user.save()
 
         if commit:
-            creator.save()  # Save the Creator instance
-            print(f"Creator saved: {creator}")
+            creator.save()
 
         return creator
