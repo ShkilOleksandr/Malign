@@ -207,3 +207,13 @@ def update_creator_info(request):
         form = CreatorForm(instance=creator, user=request.user)
 
     return render(request, 'update_creator_info.html', {'form': form})
+
+def visit_user(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)
+
+    return render(request, 'visit_user.html', {'user': user})
+
+def visit_creator(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)
+
+    return render(request, 'visit_creator.html', {'user': user})

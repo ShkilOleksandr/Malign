@@ -26,10 +26,22 @@ class Podcast(models.Model):
     pub_date = models.DateTimeField()
     image = models.ImageField(upload_to='images/')
 
+    class Meta:
+        ordering = ['-pub_date']  # Newer podcasts appear first
+
+    def __str__(self):
+        return self.title
+
 class Comment(models.Model):
     post = models.ForeignKey('Podcast', on_delete=models.CASCADE)
     content = models.TextField()
     author = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
     pub_date = models.DateTimeField()
+
+    class Meta:
+        ordering = ['-pub_date']  # Newer comments appear first
+
+    def __str__(self):
+        return self.content
 
 

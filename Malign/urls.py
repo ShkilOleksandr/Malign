@@ -20,7 +20,7 @@ from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
 from blog import views
-from blog.views import update_user_info, update_creator_info
+from blog.views import update_user_info, update_creator_info, visit_user, visit_creator
 
 urlpatterns = [
     path('blog/', include('blog.urls')),
@@ -37,6 +37,8 @@ urlpatterns = [
     path('podcast/<int:podcast_id>/comment/', views.add_comment, name='add_comment'),
     path('user/update/', update_user_info, name='update_user_info'),
     path('creator/update/', update_creator_info, name='update_creator_info'),
+    path('visiting_user/<int:user_id>/',visit_user, name='visit_user'),
+    path('visiting_creator/<int:user_id>/',visit_creator, name='visit_creator'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

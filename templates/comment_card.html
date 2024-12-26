@@ -1,0 +1,14 @@
+<article class="podcast-card">
+    {% if comment.author.avatar %}
+        <img src="{{ comment.author.avatar.url }}" alt="Podcast image" class="podcast-image">
+   {% endif %}
+
+  <div class="podcast-content">
+    <a href="{% url 'visit_user' comment.author.id %}">
+      <h4>{{ comment.author.username }}</h4>
+          </a>
+    <p>{{ comment.pub_date }}</p>
+    <p>{{ comment.content }}</p>
+  </div>
+
+</article>

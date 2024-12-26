@@ -37,7 +37,6 @@ SECRET_KEY = 'django-insecure-sx)*5fke4!t^(+%c_!cw@y#!$j1farrzdpz#phg$(meh1a2c!3
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 AUTH_USER_MODEL = 'blog.CustomUser'
 
 # Application definition
