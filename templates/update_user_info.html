@@ -1,14 +1,24 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Update User Info</title>
-</head>
-<body>
-    <h1>Update User Information</h1>
+{% extends 'base.html' %}
+{% load static %}
+{% block content_of_header %}
+
+    <div class="podcasts_header">
+        <img  src="{% static 'logos/Malign_logo.png' %}" alt="No logo ;(" class="podcast_logo"/>
+        <h1>Malign</h1>
+        <div class="separator"></div>
+        <h1>Update information</h1>
+    </div>
+
+{% endblock %}
+{% block content %}
+    <article>
+    <div class="login_form">
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Update</button>
     </form>
-</body>
-</html>
+    </div>
+    </article>
+
+{% endblock %}

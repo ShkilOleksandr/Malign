@@ -1,10 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Creator Dashboard
+{% endblock %}
+{% block content_of_header %}
 
-</body>
-</html>
+    <div class="podcasts_header">
+    <a href='/' class="podcast_logo">
+        <img  src="{% static 'logos/Malign_logo.png' %}" alt="No logo ;(" class="podcast_logo"/>
+    </a>
+        <h1>Malign</h1>
+        <div class="separator"></div>
+        <h1>Visiting a user</h1>
+    </div>
+
+{% endblock %}
+{% block content %}
+    <article class="podcast-card">
+    <h1>{{ user.username }}</h1>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Joined on:</strong> {{ user.date_joined|date:"F j, Y" }}</p>
+    </article>
+{% endblock %}
