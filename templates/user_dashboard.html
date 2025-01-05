@@ -11,13 +11,17 @@ Creator Dashboard
     </a>
         <h1>Malign</h1>
         <div class="separator"></div>
-        <h1>Dashboard</h1>
+        <h1>Dashboard of {{ user.username }}</h1>
     </div>
 
 {% endblock %}
 {% block content %}
     <article class="podcast-card">
-    <h1>Welcome, {{ user.username }}!</h1>
+    {% if creator.user.avatar %}
+        <img src="{{ creator.user.avatar.url}}" alt="Avatar" style="max-width: 200px;">
+    {% else %}
+        <p>No avatar uploaded.</p>
+    {% endif %}
     <p><strong>Email:</strong> {{ user.email }}</p>
     <p><strong>Joined on:</strong> {{ user.date_joined|date:"F j, Y" }}</p>
 

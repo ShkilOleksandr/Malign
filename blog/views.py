@@ -14,6 +14,7 @@ from django import forms
 from django.http import HttpResponse
 from django.utils.functional import SimpleLazyObject
 
+from Malign import settings
 from blog.forms import CustomUserForm, CreatorForm
 from blog.models import Podcast, Creator, Comment, CustomUser
 
@@ -105,7 +106,7 @@ def login_view(request):
 def dashboard_view(request):
     if request.user.is_authenticated:
 
-        # Attempt to get creator profile
+        print("I am being redirected to the dashboard.")
         creator_profile = getattr(request.user, 'creator_profile', None)
         if creator_profile:
             return render(request, 'creator_dashboard.html', {'creator': creator_profile})
@@ -120,31 +121,62 @@ def custom_logout_view(request):
 
 @login_required
 def upload_podcast(request):
-    if hasattr(request.user, 'creator'):
-        creator = request.user.creator
+
+    if hasattr(request.user, 'creator_profile'):  # Ensure user has a Creator profile
+        creator = request.user.creator_profile  # Adjust related_name if needed
 
         if request.method == 'POST':
-            title = request.POST['title']
-            description = request.POST['description']
-            pub_date = request.POST['pub_date']
-            link = request.POST['link']
-            image = request.FILES['image']  # Handle uploaded file
+            try:
+                # Collect form data
+                title = request.POST.get('title')
+                description = request.POST.get('description')
+                pub_date = request.POST.get('pub_date')
+                link = request.POST.get('link')
+                image = request.FILES.get('image')
 
-            # Create the podcast instance
-            podcast = Podcast.objects.create(
-                title=title,
-                creator=creator,
-                description=description,
-                pub_date=pub_date,
-                link=link,
-                image=image
-            )
-            podcast.save()
-            messages.success(request, 'Podcast uploaded successfully!')
-            return redirect('dashboard')  # Redirect back to the dashboard
+                # Validate required fields
+                if not all([title, description, pub_date, link, image]):
+                    messages.error(request, 'All fields are required.')
+                    return redirect('dashboard')
 
+                # Validate pub_date format
+                try:
+                    pub_date = datetime.fromisoformat(pub_date)  # Use ISO 8601
+                except ValueError:
+                    messages.error(request, 'Invalid date format. Use YYYY-MM-DDTHH:MM.')
+                    return redirect('dashboard')
+
+                # Validate link format
+                if not link.startswith(('http://', 'https://')):
+                    messages.error(request, 'Invalid URL format.')
+                    return redirect('dashboard')
+
+                # Create and save the podcast instance
+                podcast = Podcast.objects.create(
+                    title=title,
+                    creator=creator,
+                    description=description,
+                    pub_date=pub_date,
+                    link=link,
+                    image=image
+                )
+                print("MEDIA_ROOT:", settings.MEDIA_ROOT)
+                print("Uploaded File Path:", podcast.image.path)
+                print("Uploaded File URL:", podcast.image.url)
+                podcast.save()
+
+                messages.success(request, 'Podcast uploaded successfully!')
+                return redirect('dashboard')
+            except Exception as e:
+                # Catch any unexpected errors
+                print("Error Creating Podcast:", e)
+                messages.error(request, f"An error occurred: {e}")
+                return redirect('dashboard')
+
+        # Render the dashboard if not a POST request
         return render(request, 'creator_dashboard.html', {'creator': creator})
     else:
+        # Redirect non-creators
         messages.error(request, 'Only creators can upload podcasts.')
         return redirect('home')
 
@@ -210,10 +242,12 @@ def update_creator_info(request):
 
 def visit_user(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id)
-
-    return render(request, 'visit_user.html', {'user': user})
+    if hasattr(user, 'creator_profile'):
+        return render(request, 'visit_creator.html', {'creator': user})
+    else:
+        return render(request, 'visit_user.html', {'user': user})
 
 def visit_creator(request, user_id):
-    user = get_object_or_404(CustomUser, id=user_id)
+    user = get_object_or_404(Creator, id=user_id)
 
-    return render(request, 'visit_creator.html', {'user': user})
+    return render(request, 'visit_creator.html', {'creator': user})

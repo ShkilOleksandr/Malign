@@ -17,8 +17,18 @@ Creator Dashboard
 {% endblock %}
 {% block content %}
     <article class="podcast-card">
-    <h1>{{ user.username }}</h1>
-    <p><strong>Email:</strong> {{ user.email }}</p>
-    <p><strong>Joined on:</strong> {{ user.date_joined|date:"F j, Y" }}</p>
+        {% if creator.user.avatar %}
+        <img src="{{ creator.user.avatar.url}}" alt="Avatar" style="max-width: 200px;">
+    {% else %}
+        <p>No avatar uploaded.</p>
+    {% endif %}
+    <h1>{{ creator.user.username }}</h1>
+    <p><strong>Bio:</strong> {{ creator.bio }}</p>
+    <p><strong>Website:</strong>
+        <a href="{{ creator.website }}" target="_blank">{{ creator.website }}</a>
+    </p>
+
+
     </article>
+
 {% endblock %}

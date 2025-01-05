@@ -11,23 +11,22 @@ Creator Dashboard
     </a>
         <h1>Malign</h1>
         <div class="separator"></div>
-        <h1>Dashboard</h1>
+        <h1>Dashboard of {{ creator.user.username }}</h1>
     </div>
 
 {% endblock %}
 {% block content %}
     <article class="podcast-card">
-    <h1>Welcome, {{ creator.user.username }}!</h1>
-    <p><strong>Bio:</strong> {{ creator.bio }}</p>
-    <p><strong>Website:</strong> 
-        <a href="{{ creator.website }}" target="_blank">{{ creator.website }}</a>
-    </p>
-    <p><strong>Avatar:</strong></p>
-    {% if creator.user.avatar %}
+        {% if creator.user.avatar %}
         <img src="{{ creator.user.avatar.url}}" alt="Avatar" style="max-width: 200px;">
     {% else %}
         <p>No avatar uploaded.</p>
     {% endif %}
+    <p><strong>Bio:</strong> {{ creator.bio }}</p>
+    <p><strong>Website:</strong> 
+        <a href="{{ creator.website }}" target="_blank">{{ creator.website }}</a>
+    </p>
+
     </article>
     <hr>
     <article class="podcast-card">

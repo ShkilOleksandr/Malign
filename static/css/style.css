@@ -54,11 +54,11 @@ article{
 }
 
 
-/* Hover effect for podcast card */
+/*
 .podcast-card:hover {
-    transform: scale(1.03); /* Slightly enlarge on hover */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Add a stronger shadow */
-}
+   transform: scale(1.03);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+} */
 
 /* Image styling */
 .podcast-image {
@@ -72,7 +72,7 @@ article{
 
 /* Image hover effect */
 .podcast-image:hover {
-    transform: scale(1.1); /* Slightly enlarge the image on hover */
+    transform: scale(1.1);
 }
 
 /* Content container */
@@ -118,7 +118,7 @@ footer a:hover {
     position: relative;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 10%;
+    margin-top: 5%;
     width: 30%;
     height: 40% !important;
     padding: 16px;
