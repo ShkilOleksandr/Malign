@@ -17,8 +17,8 @@ Creator Dashboard
 {% endblock %}
 {% block content %}
     <article class="podcast-card">
-    {% if creator.user.avatar %}
-        <img src="{{ creator.user.avatar.url}}" alt="Avatar" style="max-width: 200px;">
+    {% if user.avatar %}
+        <img src="{{ user.avatar.url}}" alt="Avatar" style="max-width: 200px;">
     {% else %}
         <p>No avatar uploaded.</p>
     {% endif %}
