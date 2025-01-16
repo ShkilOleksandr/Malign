@@ -5,11 +5,12 @@
         <meta charset="UTF-8">
         <title>
             {% block title %}
-                Default Title
+                Malign
              {% endblock %}
         </title>
         {% load static %}
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <script src="{% static 'js/script.js' %}" defer></script>
     </head>
     <header>
         {% block content_of_header %}
@@ -21,7 +22,7 @@
              
          {% endblock %}
         </main>
-    <footer>
+    <footer id="dynamic-footer">
         &copy; 2024 Malign
     </footer>
     </body>
